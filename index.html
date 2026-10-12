@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceritify: Your Story Your Career</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- SALIN SEMUA ISI <body> DARI KODE KAMU DI SINI -->
+  <div class="container">
+    <div class="form-section">
+      <h2>📝 Buat CV</h2>
+      <label>Nama Lengkap</label>
+      <input type="text" id="nama" placeholder="Contoh: I Wayan Sudra" oninput="updateCV()">
+      <label>Jabatan / Pekerjaan</label>
+      <input type="text" id="jabatan" placeholder="Contoh: Web Developer" oninput="updateCV()">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="email@kamu.com" oninput="updateCV()">
+      <label>Nomor HP</label>
+      <input type="tel" id="telp" placeholder="08xx-xxxx-xxxx" oninput="updateCV()">
+      <label>Unggah Foto</label>
+      <input type="file" id="foto" accept="image/*" onchange="updateFoto()">
+       <label>Profil Singkat</label>
+<textarea id="profil" rows="3" placeholder="Ceritakan sedikit tentang dirimu..." oninput="ubahFormalOtomatis('profil', 'cv-profil')"></textarea>
+
+<label>Pendidikan</label>
+<textarea id="pendidikan" rows="2" placeholder="Nama Sekolah/Kampus – Jurusan" oninput="ubahFormalOtomatis('pendidikan', 'cv-pendidikan')"></textarea>
+
+<label>Pengalaman Kerja</label>
+<textarea id="pengalaman" rows="3" placeholder="Posisi – Tempat & Tanggal" oninput="ubahFormalOtomatis('pengalaman', 'cv-pengalaman')"></textarea>
+
+<label>Keahlian</label>
+<textarea id="keahlian" rows="2" placeholder="HTML, CSS, JavaScript..." oninput="ubahFormalOtomatis('keahlian', 'cv-keahlian')"></textarea>
+      <div class="grup-warna">
+        <div class="bagian-warna">
+          <h3>🎨 Warna Aksen</h3>
+          <div class="warna-pilihan">
+            <button class="warna aktif" style="background: #1e293b;" onclick="gantiWarna('#1e293b', this)"></button>
+            <button class="warna" style="background: #2563eb;" onclick="gantiWarna('#2563eb', this)"></button>
+            <button class="warna" style="background: #16a34a;" onclick="gantiWarna('#16a34a', this)"></button>
+            <button class="warna" style="background: #dc2626;" onclick="gantiWarna('#dc2626', this)"></button>
+            <button class="warna" style="background: #f59e0b;" onclick="gantiWarna('#f59e0b', this)"></button>
+            <button class="warna" style="background: #ec4899;" onclick="gantiWarna('#ec4899', this)"></button>
+          </div>
+        </div>
+        <div class="bagian-warna">
+          <h3>🎨 Warna Latar</h3>
+          <div class="warna-latar">
+            <button class="warna aktif" style="background: #ffffff;" onclick="gantiLatar('#ffffff', this)"></button>
+            <button class="warna" style="background: #f0f9ff;" onclick="gantiLatar('#f0f9ff', this)"></button>
+            <button class="warna" style="background: #fef7f1;" onclick="gantiLatar('#fef7f1', this)"></button>
+            <button class="warna" style="background: #fdf2f8;" onclick="gantiLatar('#fdf2f8', this)"></button>
+            <button class="warna" style="background: #f0fdf4;" onclick="gantiLatar('#f0fdf4', this)"></button>
+            <button class="warna" style="background: #f5f5f4;" onclick="gantiLatar('#f5f5f4', this)"></button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-unduh" id="tombol-unduh" onclick="unduhPDF()">📄 Unduh CV ke PDF</button>
+    </div>
+    <div class="cv-section">
+      <h2>👁️ Pratinjau CV</h2>
+      <div class="cv-preview" id="cv-preview">
+        <div class="cv-header">
+          <div class="foto-profil" id="foto-profil">
+            <img id="tampil-foto" src="" alt="Foto Profil">
+            <span class="inial" id="inial">SA</span>
+          </div>
+          <div class="cv-nama">
+            <h1 id="cv-nama">Nama Kamu</h1>
+            <p id="cv-jabatan">Jabatan Kamu</p>
+          </div>
+        </div>
+        <div class="garis" id="garis-pemisah"></div>
+        <div class="cv-konten">
+          <p class="kontak">
+            <span>📧 <span id="cv-email">email@kamu.com</span></span>
+            <span>📱 <span id="cv-telp">08xx-xxxx-xxxx</span></span>
+          </p>
+          <h3>PROFIL</h3>
+          <p id="cv-profil">Belum ada profil...</p>
+          <h3>PENDIDIKAN</h3>
+          <p id="cv-pendidikan">Belum diisi...</p>
+          <h3>PENGALAMAN KERJA</h3>
+          <p id="cv-pengalaman">Belum diisi...</p>
+          <h3>KEAHLIAN</h3>
+          <p id="cv-keahlian">Belum diisi...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+<script>
+  function ubahKeFormal(teks) {
+    if (!teks) return teks;
+    const aturan = [
+        {dari: /\baku\b/g, ke: "Saya"},
+        {dari: /\bgue\b/g, ke: "Saya"},
+        {dari: /\bgua\b/g, ke: "Saya"},
+        {dari: /\bbisa make microsoft/gi, ke: "mahir mengoperasikan Microsoft"},
+        {dari: /\bbisa pakai/gi, ke: "mampu menggunakan"},
+        {dari: /\budah/gi, ke: "telah"},
+        {dari: /\bgak\b|\bnggak/gi, ke: "tidak"},
+        {dari: /\bbanget/gi, ke: "sangat"},
+        {dari: /\bkerjain/gi, ke: "menyelesaikan"},
+        {dari: /\bngerjain/gi, ke: "mengerjakan"},
+        {dari: /\bbikin/gi, ke: "membuat"},
+        {dari: /\bbuat/gi, ke: "menyusun"},
+        {dari: /\bjago/gi, ke: "mahir"},
+        {dari: /\bpunya/gi, ke: "memiliki"}
+    ];
+    let hasil = teks;
+    aturan.forEach(a => hasil = hasil.replace(a.dari, a.ke));
+    return hasil.charAt(0).toUpperCase() + hasil.slice(1);
+}
+
+function ubahFormalOtomatis(idInput, idTujuan) {
+    const input = document.getElementById(idInput);
+    const tujuan = document.getElementById(idTujuan);
+    tujuan.textContent = input.value ? ubahKeFormal(input.value) : "Belum diisi...";
+}
+</script>
